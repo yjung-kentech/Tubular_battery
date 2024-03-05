@@ -10,8 +10,8 @@ COM_filename = 'JYR_cell_0228.mph';
 % COM_filename = 'JYR_cell_cylinder.mph'; % Cylinder
 COM_fullfile = fullfile(COM_filepath, COM_filename);
 
-result_filename = 'Tubular_Sweep_Crate_Rout_Result__.mat';
-% result_filename = 'Cylinder_Sweep_Crate_Rout_Result.mat';
+result_filename = 'Tubular_Sweep_Crate_Rout_Result_.mat';
+% result_filename = 'Cylinder_Sweep_Crate_Rout_Result_.mat';
 
 model = mphload(COM_fullfile);
 ModelUtil.showProgress(true);
@@ -32,11 +32,13 @@ else
     data.C_rate = C_rate_vec;
     data.R_out = R_out_vec;
     data.T_max_total = cell(N, M);
+    data.T_avg_total = cell(N, M);
     data.E_lp_total = cell(N, M);
     data.SOC = cell(N, M);
     data.t = cell(N, M);
 
     data.T_max = zeros(N, M);
+    data.T_avg = zeros(N, M);
     data.E_lp = zeros(N, M);
     data.t95 = zeros(N, M);
 
@@ -66,10 +68,12 @@ for i = data.last_i:N
 
         t_cal = toc(tic2);
 
-        data.T_max_total{i,j} = mphglobal(model, 'T_max', 'unit', 'degC');
-        data.E_lp_total{i,j} = mphglobal(model, 'E_lp');
+        data.T_max_total{i, j} = mphglobal(model, 'T_max', 'unit', 'degC');
+        data.T_avg_total{i, j} = mphglobal(model, 'T_avg', 'unit', 'degC');
+        data.E_lp_total{i, j} = mphglobal(model, 'E_lp');
 
         data.T_max(i, j) = max(mphglobal(model, 'T_max', 'unit', 'degC'));
+        data.T_avg(i, j) = max(mphglobal(model, 'T_avg', 'unit', 'degC'));
         data.E_lp(i, j) = min(mphglobal(model, 'E_lp'));
 
         [data.SOC{i, j}, unique_idx] = unique(mphglobal(model, 'SOC'));
@@ -82,11 +86,13 @@ for i = data.last_i:N
         fprintf('Done; the last case took %3.1f seconds. Completed %u out of %u cases (%3.1f%%). \n',...
             t_cal, (i - 1) * M + j, N * M, round(100 * ((i - 1) * M + j) / (N * M)))
 
-        fprintf('E_lp: %f, T_max: %f at time %f minutes.\n', data.E_lp(i, j), data.T_max(i, j));
+        fprintf('E_lp: %f, T_max: %f, T_avg: %f at time %f minutes.\n',  data.E_lp(i, j), data.T_max(i, j), data.T_avg(i, j), data.t95(i, j));
 
         % Update last_i and last_j for resuming
         data.last_i = i;
         data.last_j = j + 1;
+
+        save(result_filename, 'data');
 
     end
     data.last_j = 1; % Reset last_j for the next iteration
@@ -94,5 +100,3 @@ end
 
 t_total = toc(tic1);
 fprintf('\n\n\n\nTotal calculation time is %4.3f hours.\n\n', t_total / 3600)
-
-save(result_filename, 'data');
