@@ -6,17 +6,17 @@ import com.comsol.model.util.*
 
 %% Inputs
 COM_filepath = 'C:\Users\user\Desktop\Tubular cell';
-COM_filename = 'JYR_cell_0228.mph';
-% COM_filename = 'JYR_cell_cylinder.mph'; % Cylinder
+% COM_filename = 'JYR_cell_0527.mph'; % Tubular
+COM_filename = 'JYR_cell_cylinder_0528.mph'; % Cylinder
 COM_fullfile = fullfile(COM_filepath, COM_filename);
 
-result_filename = 'Tubular_Sweep_Crate_Rout_Result_.mat';
-% result_filename = 'Cylinder_Sweep_Crate_Rout_Result_.mat';
+% result_filename = 'Tubular_Sweep_Crate_Rout_Result.mat';
+result_filename = 'Cylinder_Sweep_Crate_Rout_Result.mat';
 
 model = mphload(COM_fullfile);
 ModelUtil.showProgress(true);
 
-mphnavigator;
+% mphnavigator;
 
 %% Sweep
 C_rate_vec = 1:12; % [1:0.2:12];
@@ -33,13 +33,15 @@ else
     data.R_out = R_out_vec;
     data.T_max_total = cell(N, M);
     data.T_avg_total = cell(N, M);
-    data.E_lp_total = cell(N, M);
+    data.Elp_avg_total = cell(N, M);
+    data.Elp_min_total = cell(N, M);
     data.SOC = cell(N, M);
     data.t = cell(N, M);
 
     data.T_max = zeros(N, M);
     data.T_avg = zeros(N, M);
-    data.E_lp = zeros(N, M);
+    data.Elp_avg = zeros(N, M);
+    data.Elp_min = zeros(N, M);
     data.t95 = zeros(N, M);
 
     data.last_i = 1;
@@ -70,11 +72,13 @@ for i = data.last_i:N
 
         data.T_max_total{i, j} = mphglobal(model, 'T_max', 'unit', 'degC');
         data.T_avg_total{i, j} = mphglobal(model, 'T_avg', 'unit', 'degC');
-        data.E_lp_total{i, j} = mphglobal(model, 'E_lp');
+        data.Elp_avg_total{i, j} = mphglobal(model, 'comp1.E_lp');
+        data.Elp_min_total{i, j} = mphglobal(model, 'comp3.E_lp');
 
         data.T_max(i, j) = max(mphglobal(model, 'T_max', 'unit', 'degC'));
         data.T_avg(i, j) = max(mphglobal(model, 'T_avg', 'unit', 'degC'));
-        data.E_lp(i, j) = min(mphglobal(model, 'E_lp'));
+        data.Elp_avg(i, j) = min(mphglobal(model, 'comp1.E_lp'));
+        data.Elp_min(i, j) = min(mphglobal(model, 'comp3.E_lp'));
 
         [data.SOC{i, j}, unique_idx] = unique(mphglobal(model, 'SOC'));
         t_values = mphglobal(model, 't', 'unit', 'min');
@@ -86,7 +90,7 @@ for i = data.last_i:N
         fprintf('Done; the last case took %3.1f seconds. Completed %u out of %u cases (%3.1f%%). \n',...
             t_cal, (i - 1) * M + j, N * M, round(100 * ((i - 1) * M + j) / (N * M)))
 
-        fprintf('E_lp: %f, T_max: %f, T_avg: %f at time %f minutes.\n',  data.E_lp(i, j), data.T_max(i, j), data.T_avg(i, j), data.t95(i, j));
+        fprintf('Elp_avg: %f, Elp_min: %f, T_max: %f, T_avg: %f at time %f minutes.\n',  data.Elp_avg(i, j), data.Elp_min(i, j), data.T_max(i, j), data.T_avg(i, j), data.t95(i, j));
 
         % Update last_i and last_j for resuming
         data.last_i = i;
