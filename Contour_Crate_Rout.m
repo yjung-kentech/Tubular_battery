@@ -5,7 +5,6 @@ clear;clc;close all
 data_dir = 'C:\Users\user\Desktop\MATLAB\Tubular_battery';
 data_file = fullfile(data_dir, 'Cylinder_Sweep_Crate_Rout_Result.mat');
 load(data_file);
-% load Cylinder_Sweep_Crate_Rout_Result.mat
 
 C_rate_vec = data.C_rate;
 D_out_vec = 2 * data.R_out;
