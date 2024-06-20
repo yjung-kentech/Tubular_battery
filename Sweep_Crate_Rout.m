@@ -6,12 +6,12 @@ import com.comsol.model.util.*
 
 %% Inputs
 COM_filepath = 'C:\Users\user\Desktop\Tubular cell';
-% COM_filename = 'JYR_cell_0527.mph'; % Tubular
-COM_filename = 'JYR_cell_cylinder_0528.mph'; % Cylinder
+COM_filename = 'JYR_cell_0527.mph'; % Tubular
+% COM_filename = 'JYR_cell_cylinder_0528.mph'; % Cylinder
 COM_fullfile = fullfile(COM_filepath, COM_filename);
 
-% result_filename = 'Tubular_Sweep_Crate_Rout_Result.mat';
-result_filename = 'Cylinder_Sweep_Crate_Rout_Result.mat';
+result_filename = 'Tubular_Sweep_Crate_Rout_Result.mat';
+% result_filename = 'Cylinder_Sweep_Crate_Rout_Result.mat';
 
 model = mphload(COM_fullfile);
 ModelUtil.showProgress(true);
