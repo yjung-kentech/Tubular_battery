@@ -5,8 +5,8 @@ import com.comsol.model.*
 import com.comsol.model.util.*
 
 COM_filepath = 'C:\Users\user\Desktop\Tubular cell';
-COM_filename = 'JYR_cell_0527.mph';
-% COM_filename = 'JYR_cell_cylinder_0528';
+% COM_filename = 'JYR_cell_0527.mph';
+COM_filename = 'JYR_cell_cylinder_0528';
 COM_fullfile = fullfile(COM_filepath, COM_filename);
 
 model = mphload(COM_fullfile);
