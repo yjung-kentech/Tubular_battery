@@ -16,7 +16,7 @@ result_filename = 'Tubular_Sweep_Crate_Rout_Result.mat';
 model = mphload(COM_fullfile);
 ModelUtil.showProgress(true);
 
-% mphnavigator;
+mphnavigator;
 
 %% Sweep
 C_rate_vec = 1:12; % [1:0.2:12];
