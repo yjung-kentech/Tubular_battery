@@ -12,8 +12,8 @@ model = mphload(COM_fullfile);
 ModelUtil.showProgress(true);
 
 % Parameters
-T_vec = [10 20]; % Temperature values
-I_vec = [0.1 0.5]; % Current values
+T_vec = [10 20 30 40 50 70 90]; % Temperature values
+I_vec = [0.1 0.5 1 2 4 6 8 10 12]; % Current values
 
 % Initialize data structures
 data_table_R = table();
