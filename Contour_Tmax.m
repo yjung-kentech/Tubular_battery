@@ -3,7 +3,7 @@ clear;clc;close all
 %% Read the data
 
 data_dir = 'C:\Users\user\Desktop\MATLAB\Tubular_battery';
-data_file = fullfile(data_dir, 'Cylinder_Sweep_Crate_Rout_Result.mat');
+data_file = fullfile(data_dir, 'Tubular_Sweep_Crate_Rout_Result.mat');
 load(data_file);
 % load Cylinder_Sweep_Crate_Rout_Result.mat
 
