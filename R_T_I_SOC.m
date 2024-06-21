@@ -39,7 +39,7 @@ for i = 1:length(T_vec)
         R = (V - OCV) / I;
 
         % Interpolate R values to SOC_vec
-        SOC_vec = [0.05:0.05:SOC(end) SOC(end)];
+        SOC_vec = [0:0.05:SOC(end) SOC(end)];
         R_vec = interp1(SOC, R, SOC_vec, 'linear', 'extrap');
 
         % Append to data_table_R
