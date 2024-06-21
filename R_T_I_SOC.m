@@ -17,6 +17,7 @@ I_vec = [0.1 0.5 1 2 4 6 8 10 12]; % Current values
 
 % Initialize data structures
 data_table_R = table();
+I_cc_matrix = zeros(length(T_vec), length(I_vec));
 
 for i = 1:length(T_vec)
     for j = 1:length(I_vec)
@@ -34,9 +35,17 @@ for i = 1:length(T_vec)
         SOC = mphglobal(model, 'SOC');
         OCV = mphglobal(model, 'OCV');
         V = mphglobal(model, 'E_cell');
+        
+        % Calculate I_cc
+        i_1C_1D = 46.022; % A/m²
+        A_jr = 0.74471; % m²
+        I_cc = I * i_1C_1D * A_jr;
 
-        % Calculate R
-        R = (V - OCV) / I;
+        % Save I_cc to matrix
+        I_cc_matrix(i, j) = I_cc;
+
+        % Calculate R, unit Ω
+        R = (V - OCV) / I_cc;
 
         % Interpolate R values to SOC_vec
         SOC_vec = [0:0.05:SOC(end) SOC(end)];
@@ -44,7 +53,7 @@ for i = 1:length(T_vec)
 
         % Append to data_table_R
         data_table_R = [data_table_R; table(T*ones(size(SOC_vec')), I*ones(size(SOC_vec')), SOC_vec', R_vec', ...
-            'VariableNames',{'T', 'I', 'SOC', 'R'})]; 
+            'VariableNames',{'T', 'I', 'SOC', 'R'})];
        
     end
 end
