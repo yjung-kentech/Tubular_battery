@@ -35,6 +35,7 @@ for i = 1:length(T_vec)
         SOC = mphglobal(model, 'SOC');
         OCV = mphglobal(model, 'OCV');
         V = mphglobal(model, 'E_cell');
+        qh = mphgloabl(model, 'q_h');
         
         % Calculate I_cc
         i_1C_1D = 46.022; % A/m²
@@ -50,13 +51,14 @@ for i = 1:length(T_vec)
         % Interpolate R values to SOC_vec
         SOC_vec = [0:0.05:SOC(end) SOC(end)];
         R_vec = interp1(SOC, R, SOC_vec, 'linear', 'extrap');
+        qh_vec = interp1(SOC, qh, SOC_vec, 'linear', 'extrap');
 
         % Append to data_table_R
-        data_table_R = [data_table_R; table(T*ones(size(SOC_vec')), I*ones(size(SOC_vec')), SOC_vec', R_vec', ...
-            'VariableNames',{'T', 'I', 'SOC', 'R'})];
+        data_table_R = [data_table_R; table(T*ones(size(SOC_vec')), I*ones(size(SOC_vec')), SOC_vec', R_vec', qh_vec', ...
+            'VariableNames',{'T', 'I', 'SOC', 'R', 'q_h'})];
        
     end
 end
 
 % Save the tables to txt files
-writetable(data_table_R, 'R(SOC, T, I).txt', 'Delimiter', '\t');
+writetable(data_table_R, 'R, qh(SOC, T, I).txt', 'Delimiter', '\t');
