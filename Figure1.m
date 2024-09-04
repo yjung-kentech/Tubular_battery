@@ -5,8 +5,8 @@ import com.comsol.model.*
 import com.comsol.model.util.*
 
 COM_filepath = 'C:\Users\user\Desktop\Tubular battery 최종';
-COM_filename1 = 'JYR_cell_0801.mph';
-COM_filename2 = 'JYR_cylinder_cell_0801';
+COM_filename1 = 'JYR_cell_0814.mph';
+COM_filename2 = 'JYR_cylinder_cell_0814';
 
 C_rate = 6;
 R_out = 23;
@@ -53,16 +53,13 @@ figure;
 lw = 1; % Desired line width
 color1 = [0.8500, 0.3250, 0.0980]; % Orange
 color2 = [0, 0.4470, 0.7410]; % Blue
-interval = 10;
 
-plot(time1, T_max1, 'Color', color1, 'LineWidth', lw, 'LineStyle', '-', 'Marker', 'o', 'MarkerIndices', 1:interval:length(T_max1), 'DisplayName', 'Tube T_{max}');
+plot(time1, T_max1, 'Color', color1, 'LineWidth', lw, 'LineStyle', '-', 'DisplayName', 'Tube T_{max}');
 hold on
-plot(time1, T_avg1, 'Color', color2, 'LineWidth', lw, 'LineStyle', '-', 'Marker', 'o', 'MarkerIndices', 1:interval:length(T_avg1), 'DisplayName', 'Tube T_{avg}');
-plot(time2, T_max2, 'Color', color1, 'LineWidth', lw, 'LineStyle', '-', 'Marker', 's', 'MarkerIndices', 1:interval:length(T_max2), 'DisplayName', 'Cylinder T_{max}');
-plot(time2, T_avg2, 'Color', color2, 'LineWidth', lw, 'LineStyle', '-', 'Marker', 's', 'MarkerIndices', 1:interval:length(T_avg2), 'DisplayName', 'Cylinder T_{avg}');
+plot(time1, T_avg1, 'Color', color2, 'LineWidth', lw, 'LineStyle', '-', 'DisplayName', 'Tube T_{avg}');
+plot(time2, T_max2, 'Color', color1, 'LineWidth', lw, 'LineStyle', '--', 'DisplayName', 'Cylinder T_{max}');
+plot(time2, T_avg2, 'Color', color2, 'LineWidth', lw, 'LineStyle', '--', 'DisplayName', 'Cylinder T_{avg}');
 hold off
-
-% yline(50, 'k--', 'LineWidth', 1, 'DisplayName', '50 ^oC');
 
 title('4680 6C');
 xlabel('Time [min]');
