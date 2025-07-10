@@ -4,7 +4,7 @@ clear; clc; close all;
 
 % 1. 기본 경로 및 파일 설정
 data_dir = 'G:\공유 드라이브\Battery Software Group (2025)\Members\정유림\Tubular battery\mat 파일';
-save_dir = 'C:\Users\user\Desktop\Figure\Figure 3\png 파일';
+save_dir = 'C:\Users\user\Desktop\Figure\Figure 3\png 파일'; % 사용자 데스크탑 경로
 mat_files = {'contour_cyl.mat', 'contour_tube.mat'};
 
 % 2. 색상맵 라이브러리 로드
